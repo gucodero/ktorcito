@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 rootProject.name = "ktorcito_app"
 include(":app")
 include(":ktorcito")
+include(":ktorcito-compiler")
