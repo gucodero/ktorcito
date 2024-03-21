@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">ktorcito</string>
+    <string name="all_posts">Todos los posts</string>
+    <string name="all">Todos</string>
+    <string name="user_x">Usuario %s</string>
+    <string name="ok">Listo</string>
+    <string name="title">Titulo</string>
+    <string name="body">Cuerpo</string>
+    <string name="user">Usuario</string>
+    <string name="create_post">Crear Post</string>
+    <string name="cancel">Cancelar</string>
+</resources>
