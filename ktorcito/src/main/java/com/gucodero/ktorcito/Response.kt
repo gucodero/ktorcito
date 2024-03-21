@@ -1,4 +1,4 @@
-package com.gucodero.ktorcito_app.data.common.util
+package com.gucodero.ktorcito
 
 import io.ktor.client.statement.HttpResponse
 

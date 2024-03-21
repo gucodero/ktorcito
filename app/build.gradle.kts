@@ -53,7 +53,7 @@ android {
 }
 
 dependencies {
-
+    implementation(project(":ktorcito"))
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.activity:activity-compose:1.8.2")
@@ -75,9 +75,6 @@ dependencies {
     //ktor
     implementation("io.ktor:ktor-client-core:2.3.9")
     implementation("io.ktor:ktor-client-logging:2.3.9")
-    implementation("io.ktor:ktor-client-serialization:2.3.9")
-    implementation("io.ktor:ktor-client-android:2.3.9")
-    implementation("io.ktor:ktor-client-json:2.3.9")
     implementation("io.ktor:ktor-client-cio:2.3.9")
     //dagger hilt
     implementation("com.google.dagger:hilt-android:2.48")

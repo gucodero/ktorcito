@@ -1,6 +1,6 @@
 package com.gucodero.ktorcito_app.data.post
 
-import com.gucodero.ktorcito_app.data.common.util.Response
+import com.gucodero.ktorcito.Response
 import com.gucodero.ktorcito_app.domain.post.entity.Post
 
 interface PostRepository {

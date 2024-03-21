@@ -1,8 +1,8 @@
 package com.gucodero.ktorcito_app.data.post
 
-import com.gucodero.ktorcito_app.data.common.util.Response
-import com.gucodero.ktorcito_app.data.common.util.map
-import com.gucodero.ktorcito_app.data.common.util.transform
+import com.gucodero.ktorcito.Response
+import com.gucodero.ktorcito.map
+import com.gucodero.ktorcito.transform
 import com.gucodero.ktorcito_app.data.post.dto.request.PostPatchRequest
 import com.gucodero.ktorcito_app.data.post.dto.request.PostRequest
 import com.gucodero.ktorcito_app.data.post.mapper.toDomain
@@ -59,7 +59,7 @@ class PostRepositoryImpl @Inject constructor(
     ): Response<Post> {
         return api.updatePost(
             id = id,
-            placeholder = PostRequest(
+            post = PostRequest(
                 userId = userId,
                 title = title,
                 body = body
@@ -77,7 +77,7 @@ class PostRepositoryImpl @Inject constructor(
     ): Response<Post> {
         return api.patchPost(
             id = id,
-            placeholder = PostPatchRequest(
+            post = PostPatchRequest(
                 userId = userId,
                 title = title,
                 body = body

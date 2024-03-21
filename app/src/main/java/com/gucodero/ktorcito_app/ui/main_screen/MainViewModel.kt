@@ -1,6 +1,6 @@
 package com.gucodero.ktorcito_app.ui.main_screen
 
-import com.gucodero.ktorcito_app.data.common.util.Response
+import com.gucodero.ktorcito.Response
 import com.gucodero.ktorcito_app.data.post.PostRepository
 import com.gucodero.ktorcito_app.domain.post.entity.Post
 import com.gucodero.ktorcito_app.ui.common.BaseViewModel
