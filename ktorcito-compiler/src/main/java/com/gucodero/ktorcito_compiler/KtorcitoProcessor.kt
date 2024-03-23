@@ -7,13 +7,13 @@ import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSClassDeclaration
-import com.gucodero.ktorcito.annotations.HelloWorld
+import com.gucodero.ktorcito.annotations.Controller
+import com.gucodero.ktorcito_compiler.processor.KtorcitoClassFactoryProcessor
+import com.gucodero.ktorcito_compiler.processor.KtorcitoClassImplProcessor
+import com.gucodero.ktorcito_compiler.util.SUFFIX_FILE_NAME
 import com.squareup.kotlinpoet.FileSpec
-import com.squareup.kotlinpoet.FunSpec
-import com.squareup.kotlinpoet.KModifier
-import com.squareup.kotlinpoet.ksp.toClassName
+import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.ksp.writeTo
-import com.squareup.kotlinpoet.typeNameOf
 
 class KtorcitoProcessor(
     private val codeGenerator: CodeGenerator,
@@ -22,7 +22,7 @@ class KtorcitoProcessor(
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
         resolver.getSymbolsWithAnnotation(
-            annotationName = HelloWorld::class.java.name
+            annotationName = Controller::class.java.name
         ).filterIsInstance<KSClassDeclaration>().forEach(::processClass)
         return emptyList()
     }
@@ -30,21 +30,62 @@ class KtorcitoProcessor(
     private fun processClass(
         clazz: KSClassDeclaration
     ) {
-        logger.warn("Processing @HelloWorld in class: ${clazz.simpleName.asString()}")
-        val funSpec: FunSpec = FunSpec.builder("helloWorld")
-            .addModifiers(KModifier.PUBLIC)
-            .receiver(clazz.toClassName())
-            .returns(typeNameOf<String>())
-            .addStatement("return \"Hello, World!\"")
-            .build()
-        val fileSpec: FileSpec = FileSpec
+
+        logger.warn(
+            message = "Init processing class ${clazz.simpleName.asString()}"
+        )
+        //PREPARE PROCESSORS
+        val ktorcitoClassImplProcessor = KtorcitoClassImplProcessor(
+            clazz = clazz,
+            logger = logger
+        )
+        val ktorcitoClassFactoryProcessor = KtorcitoClassFactoryProcessor(
+            clazz = clazz,
+            logger = logger
+        )
+
+        //CREATE FILE BUILDER
+        val fileSpecBuilder: FileSpec.Builder = FileSpec
             .builder(
                 packageName = clazz.packageName.asString(),
-                fileName = "HelloWorld_Generated"
+                fileName = "${clazz.simpleName.asString()}$SUFFIX_FILE_NAME"
             )
-            .addFunction(funSpec)
-            .build()
-        fileSpec.writeTo(codeGenerator, Dependencies(false))
+
+        //ADD IMPORTS
+        fileSpecBuilder.addImports(
+            httpMethods = ktorcitoClassImplProcessor.httpMethods
+        )
+
+        //CREATE CLASS IMPLEMENTATION
+        val classImpl: TypeSpec = ktorcitoClassImplProcessor.process()
+        fileSpecBuilder.addType(classImpl)
+
+        //CREATE FACTORY CLASS
+        val factoryClass: TypeSpec = ktorcitoClassFactoryProcessor.process()
+        fileSpecBuilder.addType(factoryClass)
+
+        //WRITE TO FILE
+        fileSpecBuilder.build().writeTo(
+            codeGenerator,
+            Dependencies(
+                aggregating = false
+            )
+        )
     }
 
+    private fun FileSpec.Builder.addImports(
+        httpMethods: Array<String>
+    ){
+        listOf(
+            "io.ktor.client.request" to httpMethods,
+            "kotlinx.coroutines" to arrayOf("withContext", "Dispatchers"),
+            "com.gucodero.ktorcito" to arrayOf("jsonBody", "setJsonBody", "KtorcitoURL"),
+            "io.ktor.client.statement" to arrayOf("HttpResponse")
+        ).forEach { (packageName: String, names: Array<String>) ->
+            addImport(
+                packageName = packageName,
+                names = names
+            )
+        }
+    }
 }

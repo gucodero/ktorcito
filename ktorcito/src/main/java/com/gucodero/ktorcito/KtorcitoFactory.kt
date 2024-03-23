@@ -2,9 +2,9 @@ package com.gucodero.ktorcito
 
 import io.ktor.client.HttpClient
 
-abstract class KtorcitoFactory<T> {
+interface KtorcitoFactory<T> {
 
-    abstract fun create(
+    fun create(
         baseUrl: String,
         httpClient: HttpClient
     ): T
