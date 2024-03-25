@@ -235,7 +235,7 @@ Aquí se muestra el paso a paso para crear un módulo de procesamiento de anotac
     }
     ```
 
-6. Anota una clase con `@HelloWorld` en el módulo de la aplicación para ver el procesador de anotaciones en acción:
+#### 6. Anota una clase con `@HelloWorld` en el módulo de la aplicación para ver el procesador de anotaciones en acción:
 
     ```kotlin
     @HelloWorld
