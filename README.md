@@ -251,7 +251,7 @@ Aquí se muestra el paso a paso para crear un módulo de procesamiento de anotac
     }
     ```
 
-¡Ahora tienes un módulo de procesamiento de anotaciones funcionando en tu proyecto!
+¡Genial 🥳! acabas de crear tu primer procesador de anotaciones.
 
 ## 🔍 Conclusión
 
